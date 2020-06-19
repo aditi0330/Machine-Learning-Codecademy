@@ -15,7 +15,7 @@ y = df[['rent']]
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size = 0.8, test_size = 0.2, random_state=6)
 
-# Add the code here:
+#Add the code here:
 
 mlr = LinearRegression()
 mlr.fit(x_train, y_train)
