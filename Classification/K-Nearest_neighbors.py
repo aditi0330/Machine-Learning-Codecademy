@@ -1,43 +1,70 @@
-def euclidean_distance(pt1, pt2):
-  distance = 0
-  for i in range(len(pt1)):
-    distance += (pt1[i] - pt2[i]) ** 2
-  return distance ** 0.5
+# 2-D distance
 
-def manhattan_distance(pt1, pt2):
-  distance = 0
+star_wars = [125, 1977]
+raiders = [115, 1981]
+mean_girls = [97, 2004]
+
+def distance(movie1, movie2):
+  length_difference = (movie1[0] - movie2[0]) ** 2
+  year_difference = (movie1[1] - movie2[1]) ** 2
+  distance = (length_difference + year_difference) ** 0.5
+  return distance
+
+print(distance(star_wars, raiders))
+print(distance(star_wars, mean_girls))
+
+# 3-D distance
+
+star_wars = [125, 1977, 11000000]
+raiders = [115, 1981, 18000000]
+mean_girls = [97, 2004, 17000000]
+
+def distance(movie1, movie2):
+  squared_difference = 0
+  for i in range(len(movie1)):
+    squared_difference += (movie1[i] - movie2[i]) ** 2
+  final_distance = squared_difference ** 0.5
+  return final_distance
+
+print(distance(star_wars, raiders))
+print(distance(star_wars, mean_girls))
+
+#Normalization
+
+release_dates = [1897.0, 1998.0, 2000.0, 1948.0, 1962.0, 1950.0, 1975.0, 1960.0, 2017.0, 1937.0, 1968.0, 1996.0, 1944.0, 1891.0, 1995.0, 1948.0, 2011.0, 1965.0, 1891.0, 1978.0]
+
+def min_max_normalize(lst):
+  minimum = min(lst)
+  maximum = max(lst)
+  normalized = []
   
-  for i in range(len(pt1)):
-    distance += abs(pt1[i] - pt2[i])
-  return distance
+  for value in lst:
+    normalized_num = (value - minimum) / (maximum - minimum)
+    normalized.append(normalized_num)
+  
+  return normalized
 
-def hamming_distance(pt1, pt2):
-  distance = 0
-  for i in range(len(pt1)):
-    if pt1[i] != pt2[i]:
-      distance += 1
-  return distance
+print(min_max_normalize(release_dates))
 
-print(hamming_distance([1, 2], [1, 100]))
-print(hamming_distance([5, 4, 9], [1, 7, 9]))
+from movies import movie_dataset, movie_labels
 
-print(euclidean_distance([1, 2], [4, 0]))
-print(euclidean_distance([5, 4, 3], [1, 7, 9]))
+print(movie_dataset['Bruce Almighty'])
+print(movie_labels['Bruce Almighty'])
 
-print(manhattan_distance([1, 2], [4, 0]))
-print(manhattan_distance([5, 4, 3], [1, 7, 9]))
+def distance(movie1, movie2):
+  squared_difference = 0
+  for i in range(len(movie1)):
+    squared_difference += (movie1[i] - movie2[i]) ** 2
+  final_distance = squared_difference ** 0.5
+  return final_distance
 
-#First, the scipy implementation of Manhattan distance is called cityblock(). 
-#Remember, computing Manhattan distance is like asking how many blocks away you are from a point.
+def classify(unknown, dataset, k):
+  distances = []
+  for title in dataset:
+    distance_to_point = distance(dataset[title], unknown)
+    distances.append([distance_to_point, title])
+  distances.sort()
+  neighbors = distances[0:k]
+  return neighbors
 
-#Second, the scipy implementation of Hamming distance will always return a number between 0 an 1.
-# Rather than summing the number of differences in dimensions, this implementation sums those differences and then divides by the total number of dimensions.
-# For example, in your implementation, the Hamming distance between [1, 2, 3] and [7, 2, -10] would be 2. In scipy‘s version, it would be 2/3.
-
-print(distance.euclidean([1, 2], [4, 0]))
-print(distance.cityblock([1, 2], [4, 0]))
-print(distance.hamming([5, 4, 9], [1, 7, 9]))
-
-# N-Fold Cross-Validation.
-# K-Nearest Neighbors (KNN) is a classification algorithm. 
-# The central idea is that data points with similar attributes tend to fall into similar categories.
+print(classify([.4, .2, .9], movie_dataset, 5))
